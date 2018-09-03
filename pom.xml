@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.nd.gaea</groupId>
+        <artifactId>gaea-spring-boot-rest-parent</artifactId>
+        <version>5.2-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.nd.auxo</groupId>
+    <artifactId>auxo-recommend-api</artifactId>
+    <version>5.4.2-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <!-- gaea 3 -->
+        <gaea.version>6.2-SNAPSHOT</gaea.version>
+        <!-- mysql -->
+        <mysql-connector-java.version>5.1.30.nd.1.13</mysql-connector-java.version>
+        <!-- spring -->
+        <spring-data-jpa-version>1.9.2.RELEASE</spring-data-jpa-version>
+        <spring-data-commons-version>1.11.2.RELEASE</spring-data-commons-version>
+        <!-- swagger -->
+        <gaea-swagger-api-config-host>auxo-recommand-service.debug.web.nd</gaea-swagger-api-config-host>
+        <gaea-swagger-api-config-title>运营管理api接口文档</gaea-swagger-api-config-title>
+        <gaea-swagger-config-locations>com.nd.auxo.recommend</gaea-swagger-config-locations>
+        <gaea-swagger-api-config-document-name>auxo_recommend_api.html</gaea-swagger-api-config-document-name>
+        <!-- sdk -->
+        <auxo-recommend-sdk-version>5.3.3-SNAPSHOT</auxo-recommend-sdk-version>
+        <auxo.opencourse.sdk.version>5.3.3-SNAPSHOT</auxo.opencourse.sdk.version>
+        <auxo-train-sdk-version>5.3.3-SNAPSHOT</auxo-train-sdk-version>
+        <elearning-ndr-sdk-version>5.3.0-SNAPSHOT</elearning-ndr-sdk-version>
+        <hy-cloud-sdk.version>0.5.0-SNAPSHOT</hy-cloud-sdk.version>
+        <auxo-exam-center-sdk-version>5.3.3-SNAPSHOT</auxo-exam-center-sdk-version>
+
+        <!-- gql -->
+        <auxo.gql.sdk.version>1.1.1-SNAPSHOT</auxo.gql.sdk.version>
+
+        <time>${maven.build.timestamp}</time>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!--mq-->
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>mq-core</artifactId>
+            <version>6.1-SNAPSHOT</version>
+        </dependency>
+        <!-- gaea 3 -->
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>gaea-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>gaea-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>gaea-data-http-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>gaea-repository</artifactId>
+        </dependency>
+        <!-- DATA -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.0.11.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${spring-data-commons-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-jpa-version}</version>
+        </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <!-- sdk -->
+        <dependency>
+            <groupId>com.nd.auxo</groupId>
+            <artifactId>auxo-recommend-sdk</artifactId>
+            <version>${auxo-recommend-sdk-version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>gaea-waf</artifactId>
+                    <groupId>com.nd.gaea</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-cloud-starter-feign</artifactId>
+                    <groupId>org.springframework.cloud</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- gql -->
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>gaea-gql</artifactId>
+            <version>6.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nd.auxo</groupId>
+            <artifactId>auxo-gql-sdk</artifactId>
+            <version>${auxo.gql.sdk.version}</version>
+        </dependency>
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3.sdp.0.1.0</version>
+        </dependency>
+        <!-- operateLog -->
+        <dependency>
+            <groupId>com.nd.component.java</groupId>
+            <artifactId>auxo_logmanage_sdk</artifactId>
+            <version>3.11.2-SNAPSHOT</version>
+        </dependency>
+        <!-- uc -->
+        <dependency>
+            <groupId>com.nd.elearning</groupId>
+            <artifactId>elearning-uc-sdk</artifactId>
+            <version>5.3.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nd.gaea</groupId>
+                    <artifactId>gaea-rest</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nd.elearning</groupId>
+            <artifactId>elearning-ndr-sdk</artifactId>
+            <version>${elearning-ndr-sdk-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nd.gaea</groupId>
+                    <artifactId>gaea-rest</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nd.auxo</groupId>
+            <artifactId>auxo-open-course-sdk</artifactId>
+            <version>5.3.3-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nd.gaea</groupId>
+                    <artifactId>gaea-rest</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nd.auxo</groupId>
+            <artifactId>auxo-tag-sdk</artifactId>
+            <version>5.3.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>1.12.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.10.5.RELEASE</version>
+        </dependency>
+        <!-- uranus -->
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>uranus-common</artifactId>
+            <version>${uranus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nd.gaea</groupId>
+            <artifactId>uranus-gql</artifactId>
+            <version>${uranus.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF-8
+                        -Dorg.springframework.boot.logging.LoggingSystem=org.springframework.boot.logging.log4j2.Log4J2LoggingSystem
+                    </argLine>
+                    <!--打包时是否略过测试-->
+                    <skip>false</skip>
+                    <!--测试出现错误时是否忽略，如果为true，则会直接打包-->
+                    <!--<testFailureIgnore>true</testFailureIgnore>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

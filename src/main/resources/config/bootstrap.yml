@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: auxo-recommand-service
+  profiles:
+    active: @env@
+  cloud:
+    config:
+      uri: @spring.cloud.config.server@
+      username: username-69d907b2-99b0-402b-9d19-d4ba5af436af
+      password: password-cd668d9b-0092-443d-a6ad-6dc5d343706f
+      label: master
+#rabbitmq:
+#    addresses: 192.168.9.78:5672
+#    listener:
+#        auto-startup: true
+#    password: cloud
+#    username: cloud
+#    vhost: elearning_dev

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+    <appenders>
+        <console name="console">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p %X{RequestId} - %m%n"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+            </Filters>
+        </console>
+        <JDBC name="databaseAppender" tableName="log">
+            <ConnectionFactory class="com.nd.auxo.log.manage.sdk.ConnectionFactory" method="getDatabaseConnection"/>
+            <Column name="log_date" isEventTimestamp="true"/>
+            <Column name="logger" pattern="%logger{1.}"/>
+            <Column name="message" pattern="%message"/>
+            <Column name="user_id" pattern="%X{userId}"/>
+            <Column name="ip_address" pattern="%X{ipAddress}"/>
+            <Column name="uri" pattern="%X{uri}"/>
+            <Column name="param" pattern="%X{param}"/>
+            <Column name="project_id" pattern="%X{projectId}"/>
+            <Column name="method" pattern="%X{method}"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+        </JDBC>
+        <RollingRandomAccessFile name="commonError"
+                                 fileName="logs/common_error.log"
+                                 filePattern="logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.common_error.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p %X{RequestId} - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+            <Filters>
+                <ThresholdFilter level="error"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="commonInfo"
+                                 fileName="logs/common_info.log"
+                                 filePattern="logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.common_info.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p %X{RequestId} - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="requestSlow"
+                                 fileName="logs/request_slow.log"
+                                 filePattern="logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.request_slow.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p %X{RequestId} - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+            </Filters>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="requestError"
+                                 fileName="logs/request_error.log"
+                                 filePattern="logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.request_error.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p %X{RequestId} - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+            <Filters>
+                <ThresholdFilter level="error"/>
+            </Filters>
+        </RollingRandomAccessFile>
+    </appenders>
+    <loggers>
+        <AsyncLogger name="com.nd.auxo.recommend.web.controller.v1" level="info" includeLocation="true">
+            <appender-ref ref="databaseAppender"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.nd.auxo.recommend.core.service" level="info" includeLocation="true">
+            <appender-ref ref="databaseAppender"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.nd.gaea.waf.log.ProfileAspect" level="info" additivity="false">
+            <appender-ref ref="requestSlow"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.nd.gaea.client.http.WafHttpClient" level="info" additivity="false">
+            <appender-ref ref="requestSlow"/>
+        </AsyncLogger>
+        <AsyncLogger name="org.springframework.cloud.netflix.feign.*" level="info" additivity="false">
+            <appender-ref ref="requestSlow"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.nd.gaea.rest.exceptions" level="info" additivity="false">
+            <appender-ref ref="requestError"/>
+        </AsyncLogger>
+
+        <AsyncRoot level="info" includeLocation="true">
+            <appender-ref ref="console"/>
+            <appender-ref ref="commonError"/>
+            <appender-ref ref="commonInfo"/>
+        </AsyncRoot>
+    </loggers>
+</Configuration>
